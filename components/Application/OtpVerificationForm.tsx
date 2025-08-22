@@ -17,7 +17,7 @@ import { showToast } from '@/lib/showToast'
 
 interface OtpVerificationFormProps {
     email: string
-    onSubmit: (values: {otp: string, email: string}) => void
+    onSubmit: (values: { otp: string; email: string }) => void
     loading: boolean
 }
 
@@ -26,7 +26,6 @@ const OtpVerificationForm = ({
     onSubmit,
     loading,
 }: OtpVerificationFormProps) => {
-
     const [isResendingOtp, setIsResendingOtp] = useState(false)
 
     const formSchema = zodSchema.pick({
@@ -42,7 +41,10 @@ const OtpVerificationForm = ({
         },
     })
 
-    const handleOtpVerification = async (values: {otp: string, email: string}) => {
+    const handleOtpVerification = async (values: {
+        otp: string
+        email: string
+    }) => {
         onSubmit(values)
     }
 
@@ -51,7 +53,7 @@ const OtpVerificationForm = ({
             setIsResendingOtp(true)
             const { data: otpResendResponse } = await axios.post(
                 '/api/auth/otp-resend',
-                {email}
+                { email }
             )
             console.log(otpResendResponse)
             if (!otpResendResponse.success) {
@@ -75,27 +77,50 @@ const OtpVerificationForm = ({
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleOtpVerification)}>
                     <div className='text-center'>
-                        <h1 className='text-2xl font-bold mb-2'>Please complete verification</h1>
+                        <h1 className='mb-2 text-2xl font-bold'>
+                            Please complete verification
+                        </h1>
                         <p>
-                            We have sent an OTP to your registered email address. The OTP is valid for 10min only.
+                            We have sent an OTP to your registered email
+                            address. The OTP is valid for 10min only.
                         </p>
                     </div>
-                    <div className='mb-5 mt-5 flex justify-center'>
+                    <div className='mt-5 mb-5 flex justify-center'>
                         <FormField
                             control={form.control}
                             name='otp'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='font-semibold'>ONE-Time Password (OTP)</FormLabel>
+                                    <FormLabel className='font-semibold'>
+                                        ONE-Time Password (OTP)
+                                    </FormLabel>
                                     <FormControl>
                                         <InputOTP maxLength={6} {...field}>
                                             <InputOTPGroup>
-                                                <InputOTPSlot className='text-xl size-10' index={0} />
-                                                <InputOTPSlot className='text-xl size-10' index={1} />
-                                                <InputOTPSlot className='text-xl size-10' index={2} />
-                                                <InputOTPSlot className='text-xl size-10' index={3} />
-                                                <InputOTPSlot className='text-xl size-10' index={4} />
-                                                <InputOTPSlot className='text-xl size-10' index={5} />
+                                                <InputOTPSlot
+                                                    className='size-10 text-xl'
+                                                    index={0}
+                                                />
+                                                <InputOTPSlot
+                                                    className='size-10 text-xl'
+                                                    index={1}
+                                                />
+                                                <InputOTPSlot
+                                                    className='size-10 text-xl'
+                                                    index={2}
+                                                />
+                                                <InputOTPSlot
+                                                    className='size-10 text-xl'
+                                                    index={3}
+                                                />
+                                                <InputOTPSlot
+                                                    className='size-10 text-xl'
+                                                    index={4}
+                                                />
+                                                <InputOTPSlot
+                                                    className='size-10 text-xl'
+                                                    index={5}
+                                                />
                                             </InputOTPGroup>
                                         </InputOTP>
                                     </FormControl>
@@ -113,17 +138,19 @@ const OtpVerificationForm = ({
                         />
                     </div>
 
-                    {
-                        !isResendingOtp ? 
+                    {!isResendingOtp ? (
                         <div className='mt-5 text-center'>
-                        <button type='submit' onClick={resendOtp} className='text-blue-500 cursor-pointer hover:underline'>
-                            Resend OTP
-                        </button>
-                    </div>
-                    :
-                    <span >Resending...</span>
-                    }
-                    
+                            <button
+                                type='submit'
+                                onClick={resendOtp}
+                                className='cursor-pointer text-blue-500 hover:underline'
+                            >
+                                Resend OTP
+                            </button>
+                        </div>
+                    ) : (
+                        <span>Resending...</span>
+                    )}
                 </form>
             </Form>
         </div>

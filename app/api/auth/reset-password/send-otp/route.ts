@@ -8,7 +8,6 @@ import { otpEmail } from '@/email/otpEmail'
 export async function POST(request: NextRequest) {
     try {
         const payload = await request.json()
-
         const validationSchema = zodSchema.pick({
             email: true,
         })
@@ -24,14 +23,17 @@ export async function POST(request: NextRequest) {
             )
         }
 
+        const { email } = validatedData.data
+
         const getUser = prisma.user.findUnique({
             where: {
-                email: validatedData.data.email,
+                email: email,
+                deletedAt: null,
             },
         })
 
         if (!getUser) {
-            return response(false, 404, 'User not found.')
+            return response(false, 404, 'User not found')
         }
 
         //delete old otp
@@ -65,8 +67,8 @@ export async function POST(request: NextRequest) {
             })
         }
 
-        return response(true, 200, 'OTP sent successfully.')
+        return response(true, 200, 'Please verify your account.')
     } catch (error) {
-        return handleApiError(error)
+        handleApiError(error)
     }
 }

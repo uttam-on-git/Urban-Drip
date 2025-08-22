@@ -1,9 +1,7 @@
-import { response } from '@/lib/helperFunction'
+import { handleApiError, response } from '@/lib/helperFunction'
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/db'
 import { zodSchema } from '@/lib/zodSchema'
-import { SignJWT } from 'jose'
-import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
     try {
@@ -44,33 +42,6 @@ export async function POST(request: NextRequest) {
             return response(false, 404, 'User not found.')
         }
 
-        const loggedInUserData = {
-            id: getUser.id,
-            role: getUser.role,
-            name: getUser.name,
-            avatar: getUser.avatarUrl,
-        }
-
-        const alg = 'HS256'
-
-        const secret = new TextEncoder().encode(process.env.SECRET_KEY)
-        const token = await new SignJWT(loggedInUserData)
-            .setProtectedHeader({ alg })
-            .setIssuedAt()
-            .setExpirationTime('24h')
-            .sign(secret)
-
-        const cookieStore = await cookies()
-
-        cookieStore.set({
-            name: 'access_token',
-            value: token,
-            httpOnly: process.env.NODE_ENV === 'production',
-            path: '/',
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-        })
-
         //remove otp after validation
 
         await prisma.oTP.delete({
@@ -79,9 +50,8 @@ export async function POST(request: NextRequest) {
             },
         })
 
-        return response(true, 200, 'Login successfully.', loggedInUserData)
+        return response(true, 200, 'OTP verified.')
     } catch (error) {
-        console.error('Verification Error:', error)
-        return response(false, 500, 'An internal server error occurred.')
+        handleApiError(error)
     }
 }

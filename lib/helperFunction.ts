@@ -24,12 +24,10 @@ export const handleApiError = (error: unknown) => {
     }
 
     // For development, include the full error in the response data for easier debugging
-    const errorData =
-        process.env.NODE_ENV === 'development' ? { error } : {}
+    const errorData = process.env.NODE_ENV === 'development' ? { error } : {}
 
     return response(false, statusCode, message, errorData)
 }
-
 
 export const generateOtp = () => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString()

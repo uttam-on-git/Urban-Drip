@@ -20,62 +20,37 @@ import { useState } from 'react'
 import { FaEyeSlash } from 'react-icons/fa'
 import { FaEye } from 'react-icons/fa'
 import Link from 'next/link'
-import { User_Register, User_ResetPassword } from '@/routes/UserPanelRoutes'
+import {
+    User_Login,
+    User_Register,
+    User_ResetPassword,
+} from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import OtpVerificationForm from '@/components/Application/OtpVerificationForm'
 import { useDispatch } from 'react-redux'
 import { login } from '@/store/reducer/authReducer'
 
-const LoginPage = () => {
-    const dispatch = useDispatch()
-    const [loading, setLoading] = useState(false)
+const ResetPassword = () => {
+    const [emailVerificationLoading, setEmailVerificationLoading] =
+        useState(false)
     const [otpVerificationloading, setOtpVerificationLoading] = useState(false)
-    const [istypePassword, setIsTypePassword] = useState(true)
     const [otpEmail, setOtpEmail] = useState<string | null>()
 
-    console.log('LoginPage rendered, otpEmail:', otpEmail)
+    const dispatch = useDispatch()
 
-    const loginSchema = zodSchema
-        .pick({
-            email: true,
-        })
-        .extend({
-            password: z.string().min(3, 'Password field is required'),
-        })
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
+    const formSchema = zodSchema.pick({
+        email: true,
+    })
+
+    const form = useForm({
+        resolver: zodResolver(formSchema),
         defaultValues: {
             email: '',
-            password: '',
         },
     })
 
-    const handleLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
-        try {
-            setLoading(true)
-            const { data: loginResponse } = await axios.post(
-                '/api/auth/login',
-                values
-            )
-            console.log(loginResponse)
-            if (!loginResponse.success) {
-                throw new Error(loginResponse.message)
-            }
-
-            setOtpEmail(values.email)
-            form.reset()
-            showToast('success', loginResponse.message)
-        } catch (error) {
-            if (error instanceof Error) {
-                showToast('error', error.message)
-            } else {
-                showToast('error', 'An unexpected error occurred')
-            }
-        } finally {
-            setLoading(false)
-        }
-    }
+    const handleEmailVerification = async (values: { email: string }) => {}
 
     //otp verification
     const handleOtpVerification = async (values: {
@@ -122,14 +97,14 @@ const LoginPage = () => {
                 {!otpEmail ? (
                     <>
                         <div className='text-center'>
-                            <h1 className='text-2xl'>Login Into Account</h1>
-                            <p>Ready to dive back in? Enter your details.</p>
+                            <h1 className='text-2xl'>Reset Password</h1>
+                            <p>Enter your email for password reset.</p>
                         </div>
                         <div className='mt-5'>
                             <Form {...form}>
                                 <form
                                     onSubmit={form.handleSubmit(
-                                        handleLoginSubmit
+                                        handleEmailVerification
                                     )}
                                 >
                                     <div className='mb-5'>
@@ -151,70 +126,21 @@ const LoginPage = () => {
                                             )}
                                         />
                                     </div>
-                                    <div className='mb-5'>
-                                        <FormField
-                                            control={form.control}
-                                            name='password'
-                                            render={({ field }) => (
-                                                <FormItem className='relative'>
-                                                    <FormLabel>
-                                                        Password
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            type={
-                                                                istypePassword
-                                                                    ? 'password'
-                                                                    : 'text'
-                                                            }
-                                                            placeholder='************'
-                                                            {...field}
-                                                        />
-                                                    </FormControl>
-                                                    <button
-                                                        type='button'
-                                                        className='absolute top-1/2 right-2 cursor-pointer'
-                                                        onClick={() =>
-                                                            setIsTypePassword(
-                                                                !istypePassword
-                                                            )
-                                                        }
-                                                    >
-                                                        {istypePassword ? (
-                                                            <FaEyeSlash />
-                                                        ) : (
-                                                            <FaEye />
-                                                        )}
-                                                    </button>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
                                     <div className='mb-3'>
                                         <ButtonLoading
                                             type='submit'
                                             className='w-full cursor-pointer'
-                                            text='Login'
-                                            loading={loading}
+                                            text='Send OTP'
+                                            loading={emailVerificationLoading}
                                         />
                                     </div>
                                     <div className='text-center'>
                                         <div className='flex items-center justify-center gap-2'>
-                                            <p>Don&apos;t have an account?</p>
                                             <Link
-                                                href={User_Register}
+                                                href={User_Login}
                                                 className='text-primary underline'
                                             >
-                                                Create an Account
-                                            </Link>
-                                        </div>
-                                        <div>
-                                            <Link
-                                                href={User_ResetPassword}
-                                                className='text-primary underline'
-                                            >
-                                                Forgot Password
+                                                Back to login
                                             </Link>
                                         </div>
                                     </div>
@@ -237,4 +163,4 @@ const LoginPage = () => {
     )
 }
 
-export default LoginPage
+export default ResetPassword

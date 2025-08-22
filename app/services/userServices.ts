@@ -1,6 +1,4 @@
-import { zodSchema } from '@/lib/zodSchema'
 import { prisma } from '@/lib/db'
-import z from 'zod'
 import * as argon2 from 'argon2'
 import { generateOtp, response } from '@/lib/helperFunction'
 import { emailVerificationLink } from '@/email/emailVerificationLink'
@@ -9,8 +7,8 @@ import { SignJWT } from 'jose'
 import { otpEmail } from '@/email/otpEmail'
 
 interface RegisterInput {
-    name: string,
-    email: string,
+    name: string
+    email: string
     password: string
 }
 
