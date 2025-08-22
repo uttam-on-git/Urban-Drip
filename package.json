@@ -15,6 +15,7 @@
     "@prisma/extension-accelerate": "^2.0.2",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
+    "@reduxjs/toolkit": "^2.8.2",
     "argon2": "^0.44.0",
     "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",
@@ -29,7 +30,9 @@
     "react-dom": "19.1.0",
     "react-hook-form": "^7.62.0",
     "react-icons": "^5.5.0",
+    "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5",
+    "redux-persist": "^6.0.0",
     "tailwind-merge": "^3.3.1",
     "zod": "^4.0.17"
   },

@@ -24,8 +24,11 @@ import { User_Register } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import OtpVerificationForm from '@/components/Application/OtpVerificationForm'
+import { useDispatch } from 'react-redux'
+import { login } from '@/store/reducer/authReducer'
 
 const LoginPage = () => {
+    const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [otpVerificationloading, setOtpVerificationLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(true)
@@ -61,7 +64,6 @@ const LoginPage = () => {
             }
 
             setOtpEmail(values.email)
-            console.log('otpEmail set:', values.email)
             form.reset()
             showToast('success', loginResponse.message)
         } catch (error) {
@@ -79,17 +81,17 @@ const LoginPage = () => {
     const handleOtpVerification = async (values: {email: string, otp: string}) => {
         try {
             setOtpVerificationLoading(true)
-            const { data: loginResponse } = await axios.post(
+            const { data: otpResponse } = await axios.post(
                 '/api/auth/verify-otp',
                 values
             )
-            console.log(loginResponse)
-            if (!loginResponse.success) {
-                throw new Error(loginResponse.message)
+            if (!otpResponse.success) {
+                throw new Error(otpResponse.message)
             }
 
             setOtpEmail("")
-            showToast('success', loginResponse.message)
+            showToast('success', otpResponse.message)
+            dispatch(login(otpResponse.data))
         } catch (error) {
             if (error instanceof Error) {
                 showToast('error', error.message)

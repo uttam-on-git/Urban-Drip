@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import ToastProvider from '@/components/Application/ToastProvider'
+import GlobalStoreProvider from '@/components/Application/GlobalStoreProvider'
 
 const robotFont = Roboto({
     weight: ['100', '300', '400', '700', '900'],
@@ -22,8 +23,10 @@ export default function RootLayout({
     return (
         <html lang='en'>
             <body className={`${robotFont.className} antialiased`}>
-                <ToastProvider />
-                {children}
+                <GlobalStoreProvider>
+                    <ToastProvider />
+                    {children}
+                </GlobalStoreProvider>
             </body>
         </html>
     )
