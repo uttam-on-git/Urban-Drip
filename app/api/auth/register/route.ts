@@ -62,6 +62,6 @@ export async function POST(request: NextRequest) {
         )
     } catch (error) {
         console.error('[API REGISTRATION ERROR]:', error)
-        return handleApiError(error, 'An error occurred during registration.')
+        return handleApiError(error)
     }
 }

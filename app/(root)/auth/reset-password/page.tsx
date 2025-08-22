@@ -5,7 +5,6 @@ import Logo from '@/public/assets/images/logo-black.png'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
-import z from 'zod'
 import {
     Form,
     FormControl,
@@ -17,27 +16,21 @@ import {
 import { Input } from '@/components/ui/input'
 import ButtonLoading from '@/components/Application/ButtonLoading'
 import { useState } from 'react'
-import { FaEyeSlash } from 'react-icons/fa'
-import { FaEye } from 'react-icons/fa'
 import Link from 'next/link'
 import {
     User_Login,
-    User_Register,
-    User_ResetPassword,
 } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import OtpVerificationForm from '@/components/Application/OtpVerificationForm'
-import { useDispatch } from 'react-redux'
-import { login } from '@/store/reducer/authReducer'
+import UpdatePassword from '@/components/Application/UpdatePassword'
 
 const ResetPassword = () => {
     const [emailVerificationLoading, setEmailVerificationLoading] =
         useState(false)
     const [otpVerificationloading, setOtpVerificationLoading] = useState(false)
     const [otpEmail, setOtpEmail] = useState<string | null>()
-
-    const dispatch = useDispatch()
+    const [isOtpVerified, setIsOtpVerified] = useState(false);
 
     const formSchema = zodSchema.pick({
         email: true,
@@ -50,7 +43,29 @@ const ResetPassword = () => {
         },
     })
 
-    const handleEmailVerification = async (values: { email: string }) => {}
+    const handleEmailVerification = async (values: { email: string }) => {
+        try {
+            setEmailVerificationLoading(true)
+            const { data: sendOtpResponse } = await axios.post(
+                '/api/auth/reset-password/send-otp',
+                values
+            )
+            if (!sendOtpResponse.success) {
+                throw new Error(sendOtpResponse.message)
+            }
+
+            setOtpEmail(values.email)
+            showToast('success', sendOtpResponse.message)
+        } catch (error) {
+            if (error instanceof Error) {
+                showToast('error', error.message)
+            } else {
+                showToast('error', 'An unexpected error occurred')
+            }
+        } finally {
+            setEmailVerificationLoading(false)
+        }
+    }
 
     //otp verification
     const handleOtpVerification = async (values: {
@@ -60,16 +75,15 @@ const ResetPassword = () => {
         try {
             setOtpVerificationLoading(true)
             const { data: otpResponse } = await axios.post(
-                '/api/auth/verify-otp',
+                '/api/auth/reset-password/verify-otp',
                 values
             )
             if (!otpResponse.success) {
                 throw new Error(otpResponse.message)
             }
 
-            setOtpEmail('')
             showToast('success', otpResponse.message)
-            dispatch(login(otpResponse.data))
+            setIsOtpVerified(true)
         } catch (error) {
             if (error instanceof Error) {
                 showToast('error', error.message)
@@ -150,12 +164,16 @@ const ResetPassword = () => {
                     </>
                 ) : (
                     <>
-                        {console.log(otpEmail, 'from the comp')}
-                        <OtpVerificationForm
+                        {
+                            !isOtpVerified ? 
+                            <OtpVerificationForm
                             email={otpEmail}
                             loading={otpVerificationloading}
                             onSubmit={handleOtpVerification}
-                        />
+                        /> : 
+                        <UpdatePassword email={otpEmail} />
+                        }
+                        
                     </>
                 )}
             </CardContent>

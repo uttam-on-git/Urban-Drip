@@ -1,9 +1,6 @@
 'use client'
-import { Card, CardContent } from '@/components/ui/card'
 import { zodSchema } from '@/lib/zodSchema'
-import Logo from '@/public/assets/images/logo-black.png'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Image from 'next/image'
 import { useForm } from 'react-hook-form'
 import z from 'zod'
 import {
@@ -19,20 +16,22 @@ import ButtonLoading from '@/components/Application/ButtonLoading'
 import { useState } from 'react'
 import { FaEyeSlash } from 'react-icons/fa'
 import { FaEye } from 'react-icons/fa'
-import Link from 'next/link'
-import { User_Login } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
+import { useRouter } from 'next/navigation'
+import { User_Login } from '@/routes/UserPanelRoutes'
 
-const RegisterPage = () => {
+const UpdatePassword = ({email} : {email: string}) => {
+
+    const router = useRouter()
+
     const [loading, setLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(true)
 
     const registerSchema = zodSchema
         .pick({
-            email: true,
             password: true,
-            name: true,
+            email: true
         })
         .extend({
             confirmPassword: z.string(),
@@ -44,28 +43,27 @@ const RegisterPage = () => {
     const form = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
-            name: '',
-            email: '',
+            email: email,
             password: '',
             confirmPassword: '',
         },
     })
 
-    const handleRegisterSubmit = async (
+    const handlePasswordUpdate = async (
         values: z.infer<typeof registerSchema>
     ) => {
         try {
             setLoading(true)
-            const { data: registerResponse } = await axios.post(
-                '/api/auth/register',
+            const { data: passwordUpdateResponse } = await axios.put(
+                '/api/auth/reset-password/update-password',
                 values
             )
-            if (!registerResponse.success) {
-                throw new Error(registerResponse.message)
+            if (!passwordUpdateResponse.success) {
+                throw new Error(passwordUpdateResponse.message)
             }
-
             form.reset()
-            showToast('success', registerResponse.message)
+            showToast('success', passwordUpdateResponse.message)
+            router.push(User_Login)
         } catch (error) {
             if (error instanceof Error) {
                 showToast('error', error.message)
@@ -78,64 +76,16 @@ const RegisterPage = () => {
     }
 
     return (
-        <Card className='w-[400px]'>
-            <CardContent>
-                <div className='flex justify-center'>
-                    <Image
-                        src={Logo.src}
-                        alt='Logo'
-                        width={Logo.width}
-                        height={Logo.height}
-                        className='max-w-[150px]'
-                    />
-                </div>
+            <div>
                 <div className='text-center'>
-                    <h1 className='text-2xl'>Login Into Account</h1>
-                    <p>Ready to dive back in? Enter your details.</p>
+                    <h1 className='text-2xl'>Update Password</h1>
+                    <p>Create new password by filling below form.</p>
                 </div>
                 <div className='mt-5'>
                     <Form {...form}>
                         <form
-                            onSubmit={form.handleSubmit(handleRegisterSubmit)}
+                            onSubmit={form.handleSubmit(handlePasswordUpdate)}
                         >
-                            <div className='mb-5'>
-                                <FormField
-                                    control={form.control}
-                                    name='name'
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Full Name</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type='text'
-                                                    placeholder='your-full-name'
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <div className='mb-5'>
-                                <FormField
-                                    control={form.control}
-                                    name='email'
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type='email'
-                                                    placeholder='your-email@gmail.com'
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
                             <div className='mb-5'>
                                 <FormField
                                     control={form.control}
@@ -199,27 +149,15 @@ const RegisterPage = () => {
                                 <ButtonLoading
                                     type='submit'
                                     className='w-full cursor-pointer'
-                                    text='Create Account'
+                                    text='Update Password'
                                     loading={loading}
                                 />
-                            </div>
-                            <div className='text-center'>
-                                <div className='flex items-center justify-center gap-2'>
-                                    <p>Already have an account?</p>
-                                    <Link
-                                        href={User_Login}
-                                        className='text-primary underline'
-                                    >
-                                        Login
-                                    </Link>
-                                </div>
                             </div>
                         </form>
                     </Form>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
     )
 }
 
-export default RegisterPage
+export default UpdatePassword

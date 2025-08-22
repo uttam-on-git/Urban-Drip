@@ -25,12 +25,13 @@ export async function POST(request: NextRequest) {
 
         const { email } = validatedData.data
 
-        const getUser = prisma.user.findUnique({
+        const getUser = await prisma.user.findUnique({
             where: {
                 email: email,
-                deletedAt: null,
             },
         })
+
+        console.log(getUser)
 
         if (!getUser) {
             return response(false, 404, 'User not found')
