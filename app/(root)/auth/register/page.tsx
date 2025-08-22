@@ -20,7 +20,7 @@ import { useState } from 'react'
 import { FaEyeSlash } from 'react-icons/fa'
 import { FaEye } from 'react-icons/fa'
 import Link from 'next/link'
-import { User_Login } from '@/routes/UserPanelRoutes'
+import { Website_Login } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 
@@ -207,7 +207,7 @@ const RegisterPage = () => {
                                 <div className='flex items-center justify-center gap-2'>
                                     <p>Already have an account?</p>
                                     <Link
-                                        href={User_Login}
+                                        href={Website_Login}
                                         className='text-primary underline'
                                     >
                                         Login

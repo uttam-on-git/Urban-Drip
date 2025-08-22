@@ -20,21 +20,24 @@ import { useState } from 'react'
 import { FaEyeSlash } from 'react-icons/fa'
 import { FaEye } from 'react-icons/fa'
 import Link from 'next/link'
-import { User_Register, User_ResetPassword } from '@/routes/UserPanelRoutes'
+import { User_Dashboard, Website_Register, Website_ResetPassword } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import OtpVerificationForm from '@/components/Application/OtpVerificationForm'
 import { useDispatch } from 'react-redux'
 import { login } from '@/store/reducer/authReducer'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { ADMIN_DASHBOARD } from '@/routes/AdminPanelRoutes'
 
 const LoginPage = () => {
     const dispatch = useDispatch()
+    const searchParams = useSearchParams()
+    const router = useRouter()
+
     const [loading, setLoading] = useState(false)
     const [otpVerificationloading, setOtpVerificationLoading] = useState(false)
     const [istypePassword, setIsTypePassword] = useState(true)
     const [otpEmail, setOtpEmail] = useState<string | null>()
-
-    console.log('LoginPage rendered, otpEmail:', otpEmail)
 
     const loginSchema = zodSchema
         .pick({
@@ -58,7 +61,7 @@ const LoginPage = () => {
                 '/api/auth/login',
                 values
             )
-            console.log(loginResponse)
+            console.log("loginResponse", loginResponse)
             if (!loginResponse.success) {
                 throw new Error(loginResponse.message)
             }
@@ -83,6 +86,7 @@ const LoginPage = () => {
         otp: string
     }) => {
         try {
+            console.log('from otp veri')
             setOtpVerificationLoading(true)
             const { data: otpResponse } = await axios.post(
                 '/api/auth/verify-otp',
@@ -95,6 +99,16 @@ const LoginPage = () => {
             setOtpEmail('')
             showToast('success', otpResponse.message)
             dispatch(login(otpResponse.data))
+
+            const callbackUrl = searchParams.get('callback');
+            console.log("Otp response",otpResponse)
+
+            if(callbackUrl) {
+                router.push(callbackUrl)
+            } else {
+                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                otpResponse.data.role === 'ADMIN' ? router.push(ADMIN_DASHBOARD) : router.push(User_Dashboard)
+            }
         } catch (error) {
             if (error instanceof Error) {
                 showToast('error', error.message)
@@ -203,7 +217,7 @@ const LoginPage = () => {
                                         <div className='flex items-center justify-center gap-2'>
                                             <p>Don&apos;t have an account?</p>
                                             <Link
-                                                href={User_Register}
+                                                href={Website_Register}
                                                 className='text-primary underline'
                                             >
                                                 Create an Account
@@ -211,7 +225,7 @@ const LoginPage = () => {
                                         </div>
                                         <div>
                                             <Link
-                                                href={User_ResetPassword}
+                                                href={Website_ResetPassword}
                                                 className='text-primary underline'
                                             >
                                                 Forgot Password
@@ -224,7 +238,6 @@ const LoginPage = () => {
                     </>
                 ) : (
                     <>
-                        {console.log(otpEmail, 'from the comp')}
                         <OtpVerificationForm
                             email={otpEmail}
                             loading={otpVerificationloading}

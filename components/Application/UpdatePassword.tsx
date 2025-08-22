@@ -19,7 +19,7 @@ import { FaEye } from 'react-icons/fa'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import { useRouter } from 'next/navigation'
-import { User_Login } from '@/routes/UserPanelRoutes'
+import { Website_Login } from '@/routes/UserPanelRoutes'
 
 const UpdatePassword = ({email} : {email: string}) => {
 
@@ -63,7 +63,7 @@ const UpdatePassword = ({email} : {email: string}) => {
             }
             form.reset()
             showToast('success', passwordUpdateResponse.message)
-            router.push(User_Login)
+            router.push(Website_Login)
         } catch (error) {
             if (error instanceof Error) {
                 showToast('error', error.message)

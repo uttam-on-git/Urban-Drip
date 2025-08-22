@@ -7,7 +7,7 @@ import verifiedImage from '@/public/assets/images/verified.gif'
 import verificationFailedImage from '@/public/assets/images/verification-failed.gif'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { User_Home } from '@/routes/UserPanelRoutes'
+import { Website_Home } from '@/routes/UserPanelRoutes'
 import Link from 'next/link'
 
 interface PageProps {
@@ -43,6 +43,7 @@ const EmailVerification = ({ params }: PageProps) => {
                                 alt='verified Image'
                                 height={100}
                                 width={100}
+                                unoptimized
                             />
                         </div>
                         <div className='text-center'>
@@ -50,7 +51,7 @@ const EmailVerification = ({ params }: PageProps) => {
                                 Email verification success.
                             </h1>
                             <Button asChild>
-                                <Link href={User_Home}>Continue Shoping</Link>
+                                <Link href={Website_Home}>Continue Shoping</Link>
                             </Button>
                         </div>
                     </div>
@@ -69,7 +70,7 @@ const EmailVerification = ({ params }: PageProps) => {
                                 Email verification failed.
                             </h1>
                             <Button asChild>
-                                <Link href={User_Home}>Continue Shoping</Link>
+                                <Link href={Website_Home}>Continue Shoping</Link>
                             </Button>
                         </div>
                     </div>

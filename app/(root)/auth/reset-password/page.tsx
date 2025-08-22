@@ -18,7 +18,7 @@ import ButtonLoading from '@/components/Application/ButtonLoading'
 import { useState } from 'react'
 import Link from 'next/link'
 import {
-    User_Login,
+    Website_Login,
 } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
@@ -151,7 +151,7 @@ const ResetPassword = () => {
                                     <div className='text-center'>
                                         <div className='flex items-center justify-center gap-2'>
                                             <Link
-                                                href={User_Login}
+                                                href={Website_Login}
                                                 className='text-primary underline'
                                             >
                                                 Back to login
