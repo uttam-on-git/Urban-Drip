@@ -20,7 +20,11 @@ import { useState } from 'react'
 import { FaEyeSlash } from 'react-icons/fa'
 import { FaEye } from 'react-icons/fa'
 import Link from 'next/link'
-import { User_Dashboard, Website_Register, Website_ResetPassword } from '@/routes/UserPanelRoutes'
+import {
+    User_Dashboard,
+    Website_Register,
+    Website_ResetPassword,
+} from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import OtpVerificationForm from '@/components/Application/OtpVerificationForm'
@@ -61,7 +65,7 @@ const LoginPage = () => {
                 '/api/auth/login',
                 values
             )
-            console.log("loginResponse", loginResponse)
+            console.log('loginResponse', loginResponse)
             if (!loginResponse.success) {
                 throw new Error(loginResponse.message)
             }
@@ -100,14 +104,16 @@ const LoginPage = () => {
             showToast('success', otpResponse.message)
             dispatch(login(otpResponse.data))
 
-            const callbackUrl = searchParams.get('callback');
-            console.log("Otp response",otpResponse)
+            const callbackUrl = searchParams.get('callback')
+            console.log('Otp response', otpResponse)
 
-            if(callbackUrl) {
+            if (callbackUrl) {
                 router.push(callbackUrl)
             } else {
                 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                otpResponse.data.role === 'ADMIN' ? router.push(ADMIN_DASHBOARD) : router.push(User_Dashboard)
+                otpResponse.data.role === 'ADMIN'
+                    ? router.push(ADMIN_DASHBOARD)
+                    : router.push(User_Dashboard)
             }
         } catch (error) {
             if (error instanceof Error) {

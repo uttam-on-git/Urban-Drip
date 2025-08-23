@@ -1,7 +1,5 @@
 const MyAccount = () => {
-  return (
-    <div>MyAccount</div>
-  )
+    return <div>MyAccount</div>
 }
 
 export default MyAccount

@@ -17,9 +17,7 @@ import { Input } from '@/components/ui/input'
 import ButtonLoading from '@/components/Application/ButtonLoading'
 import { useState } from 'react'
 import Link from 'next/link'
-import {
-    Website_Login,
-} from '@/routes/UserPanelRoutes'
+import { Website_Login } from '@/routes/UserPanelRoutes'
 import axios from 'axios'
 import { showToast } from '@/lib/showToast'
 import OtpVerificationForm from '@/components/Application/OtpVerificationForm'
@@ -30,7 +28,7 @@ const ResetPassword = () => {
         useState(false)
     const [otpVerificationloading, setOtpVerificationLoading] = useState(false)
     const [otpEmail, setOtpEmail] = useState<string | null>()
-    const [isOtpVerified, setIsOtpVerified] = useState(false);
+    const [isOtpVerified, setIsOtpVerified] = useState(false)
 
     const formSchema = zodSchema.pick({
         email: true,
@@ -164,16 +162,15 @@ const ResetPassword = () => {
                     </>
                 ) : (
                     <>
-                        {
-                            !isOtpVerified ? 
+                        {!isOtpVerified ? (
                             <OtpVerificationForm
-                            email={otpEmail}
-                            loading={otpVerificationloading}
-                            onSubmit={handleOtpVerification}
-                        /> : 
-                        <UpdatePassword email={otpEmail} />
-                        }
-                        
+                                email={otpEmail}
+                                loading={otpVerificationloading}
+                                onSubmit={handleOtpVerification}
+                            />
+                        ) : (
+                            <UpdatePassword email={otpEmail} />
+                        )}
                     </>
                 )}
             </CardContent>

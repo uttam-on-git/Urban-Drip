@@ -51,7 +51,9 @@ const EmailVerification = ({ params }: PageProps) => {
                                 Email verification success.
                             </h1>
                             <Button asChild>
-                                <Link href={Website_Home}>Continue Shoping</Link>
+                                <Link href={Website_Home}>
+                                    Continue Shoping
+                                </Link>
                             </Button>
                         </div>
                     </div>
@@ -70,7 +72,9 @@ const EmailVerification = ({ params }: PageProps) => {
                                 Email verification failed.
                             </h1>
                             <Button asChild>
-                                <Link href={Website_Home}>Continue Shoping</Link>
+                                <Link href={Website_Home}>
+                                    Continue Shoping
+                                </Link>
                             </Button>
                         </div>
                     </div>
