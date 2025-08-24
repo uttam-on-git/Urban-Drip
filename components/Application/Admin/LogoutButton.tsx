@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { showToast } from '@/lib/showToast'

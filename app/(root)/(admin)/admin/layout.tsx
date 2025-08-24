@@ -18,7 +18,7 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                         <TopBar />
                         {children}
                     </div>
-                    <div className='dark:bg-background flex h-[40x] items-center justify-center border-t bg-gray-50 text-sm'>
+                    <div className='dark:bg-background flex h-[40px] items-center justify-center border-t bg-gray-50 text-sm'>
                         © 2025 WebForgeLab. All Rights Reserved.
                     </div>
                 </main>

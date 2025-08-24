@@ -39,8 +39,6 @@ model User {
   @@index([deletedAt])
 } 
 
-// In your schema.prisma file
-
 model OTP {
   id String   @id @default(cuid())
   email String
@@ -49,4 +47,21 @@ model OTP {
   createdAt DateTime @default(now())
 
   @@index([expiresAt])
+}
+
+model Media {
+  id            String    @id @default(cuid())
+  asset_id      String
+  public_id     String
+  path          String
+  secure_url    String
+  thumbnail_url String
+  alt           String?
+  title         String?
+  deletedAt     DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt 
+
+  @@index([deletedAt])
 }
