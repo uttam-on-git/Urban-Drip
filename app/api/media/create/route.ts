@@ -5,7 +5,6 @@ import cloudinary from '@/lib/cloudinary'
 
 export async function POST(request: NextRequest) {
     const payload = await request.json()
-    console.log(payload)
     try {
         const auth = await isAuthenticated('ADMIN')
         if (!auth.isAuth) {
@@ -23,7 +22,9 @@ export async function POST(request: NextRequest) {
         return response(true, 201, 'Media upload successfully.', newMedia)
     } catch (error) {
         if (payload && payload.length > 0) {
-            const publicIds = payload.map((data: { public_id: string }) => data.public_id)
+            const publicIds = payload.map(
+                (data: { public_id: string }) => data.public_id
+            )
 
             try {
                 await cloudinary.api.delete_resources(publicIds)
