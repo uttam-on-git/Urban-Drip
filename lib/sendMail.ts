@@ -16,8 +16,6 @@ const transporter = nodemailer.createTransport({
     },
 })
 
-console.log(process.env.NODEMAILER_HOST)
-
 export const sendMail = async ({ to, subject, body }: SendEmailParams) => {
     const mailOptions = {
         from: `"Urban-Drip" <${process.env.NODEMAILER_MAIL}>`,

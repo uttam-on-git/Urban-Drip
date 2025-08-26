@@ -3,12 +3,14 @@
 
 import { Button } from '@/components/ui/button'
 import { showToast } from '@/lib/showToast'
+import {useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { CldUploadWidget } from 'next-cloudinary'
 import type { CloudinaryUploadWidgetError } from 'next-cloudinary'
 import { FiPlus } from 'react-icons/fi'
 
-const UploadMedia = ({ isMultiple }: { isMultiple?: boolean }) => {
+const UploadMedia = ({ isMultiple}: { isMultiple?: boolean, }) => {
+    const queryClient = useQueryClient()
     const handleOnError = (error: CloudinaryUploadWidgetError) => {
         if (!error) {
             showToast('error', 'An unknown error occurred')
@@ -21,10 +23,10 @@ const UploadMedia = ({ isMultiple }: { isMultiple?: boolean }) => {
         showToast('error', error.statusText)
     }
 
-    const handleOnQueuesEnd = async (
-        
-        result: { event?: string; info?: any }
-    ) => {
+    const handleOnQueuesEnd = async (result: {
+        event?: string
+        info?: any
+    }) => {
         if (result.event === 'queues-end' && result.info && result.info.files) {
             const filesArray = result.info.files
 
@@ -35,8 +37,6 @@ const UploadMedia = ({ isMultiple }: { isMultiple?: boolean }) => {
                 path: file.uploadInfo.path,
                 thumbnail_url: file.uploadInfo.thumbnail_url,
             }))
-
-            console.log('Uploaded files:', uploadedFiles)
 
             if (uploadedFiles.length > 0) {
                 try {
@@ -49,6 +49,7 @@ const UploadMedia = ({ isMultiple }: { isMultiple?: boolean }) => {
                         throw new Error(mediaUploadResponse.error)
                     }
 
+                    queryClient.invalidateQueries({ queryKey: ['media-data']})
                     showToast('success', mediaUploadResponse.message)
                 } catch (error) {
                     showToast(

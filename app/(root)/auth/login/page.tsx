@@ -65,7 +65,6 @@ const LoginPage = () => {
                 '/api/auth/login',
                 values
             )
-            console.log('loginResponse', loginResponse)
             if (!loginResponse.success) {
                 throw new Error(loginResponse.message)
             }
@@ -90,7 +89,6 @@ const LoginPage = () => {
         otp: string
     }) => {
         try {
-            console.log('from otp veri')
             setOtpVerificationLoading(true)
             const { data: otpResponse } = await axios.post(
                 '/api/auth/verify-otp',
@@ -105,7 +103,6 @@ const LoginPage = () => {
             dispatch(login(otpResponse.data))
 
             const callbackUrl = searchParams.get('callback')
-            console.log('Otp response', otpResponse)
 
             if (callbackUrl) {
                 router.push(callbackUrl)
