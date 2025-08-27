@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { useEffect, useMemo, useState } from "react"
 
-const useFetch = (url: string, method = "GET", options = {}) =>  {
+const useFetch = (url: string, method = "GET", options: AxiosRequestConfig = {}) =>  {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<null | string>(null)
@@ -15,6 +15,7 @@ const useFetch = (url: string, method = "GET", options = {}) =>  {
             opts.data = {}
         }
         return opts
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [method, optionsString])
 
     useEffect(() => {
@@ -32,7 +33,7 @@ const useFetch = (url: string, method = "GET", options = {}) =>  {
                     throw new Error(response.message)
                 }
                 setData(response)
-                setError
+                setError(null)
             } catch (error) {
                 if(error instanceof Error) {
                     setError(error.message)
@@ -43,7 +44,7 @@ const useFetch = (url: string, method = "GET", options = {}) =>  {
         }
 
         apiCall()
-    }, [url, refreshIndex, requestOptions])
+    }, [url, refreshIndex, requestOptions, method])
 
     const refetch = () => {
         setRefreshIndex(prev => prev + 1)

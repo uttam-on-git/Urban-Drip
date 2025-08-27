@@ -78,20 +78,19 @@ const RegisterPage = () => {
     }
 
     return (
-        <Card className='w-[400px]'>
+        <Card className='w-[320px] sm:w-[400px]'>
             <CardContent>
-                <div className='flex justify-center'>
+                <div className='flex justify-center mb-5'>
                     <Image
                         src={Logo.src}
                         alt='Logo'
-                        width={Logo.width}
-                        height={Logo.height}
+                        width={100}
+                        height={100}
                         className='max-w-[150px]'
                     />
                 </div>
-                <div className='text-center'>
-                    <h1 className='text-2xl'>Login Into Account</h1>
-                    <p>Ready to dive back in? Enter your details.</p>
+                <div className='text-center mb-5'>
+                    <h1 className='text-2xl'>Make your new account</h1>
                 </div>
                 <div className='mt-5'>
                     <Form {...form}>

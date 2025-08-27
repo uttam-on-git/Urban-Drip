@@ -127,7 +127,7 @@ const MediaPage = () => {
                             {deleteType === 'SD' && <UploadMedia isMultiple={true}/>}
                             <div className='flex gap-3'>
                                 {deleteType === 'SD' ? (
-                                <Button type='button' variant='destructive'>
+                                <Button type='button' variant='destructive' className='dark:bg-red-500'>
                                     <Link
                                         href={`${ADMIN_MEDIA_SHOW}?trashof=media`}
                                     >
@@ -135,7 +135,7 @@ const MediaPage = () => {
                                     </Link>
                                 </Button>
                             ) : (
-                                <Button type='button'>
+                                <Button type='button' className='cursor-pointer dark:text-white'>
                                     <Link href={`${ADMIN_MEDIA_SHOW}`}>
                                         Back To Media
                                     </Link>
@@ -160,7 +160,7 @@ const MediaPage = () => {
                             <div className='flex gap-2'>
                                 {
                                     deleteType === 'SD' ? 
-                                    <Button type='button' variant='destructive' className='cursor-pointer' onClick={() => handleDelete(selectedMedia, deleteType)}>
+                                    <Button type='button' variant='destructive' className='cursor-pointer dark:bg-red-500' onClick={() => handleDelete(selectedMedia, deleteType)}>
                                         Move Into Trash
                                     </Button>
                                     :
@@ -185,7 +185,7 @@ const MediaPage = () => {
                     ) : 
                     <> 
                     {
-                        data?.pages.flatMap(page => page.mediaData.map(media => media.id)).length === 0 && <div className='text-center text-red-500'>Data not found.</div>
+                        data?.pages.flatMap(page => (page.mediaData || []).map(media => media.id)).length === 0 && <div className='text-center text-red-500'>Data not found.</div>
                     }
                         <div className='mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5'>
                             {data?.pages?.map((page, index) => (
@@ -207,7 +207,7 @@ const MediaPage = () => {
                     }
                     {
                         hasNextPage && 
-                        <ButtonLoading type='button' className='cursor-pointer' loading={isFetching} onClick={() => fetchNextPage()} text='Load more' />
+                        <ButtonLoading type='button' className='cursor-pointer dark:text-white' loading={isFetching} onClick={() => fetchNextPage()} text='Load more' />
                     }
                 </CardContent>
             </Card>

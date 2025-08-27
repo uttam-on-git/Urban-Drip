@@ -24,4 +24,9 @@ export const zodSchema = z.object({
     otp: z
         .string()
         .regex(/^\d{6}$/, { message: 'otp must be a 6 digit number' }),
+
+    id: z.string().min(3, 'id is required.'),
+    alt: z.string().min(3, 'Alt is required.'),
+    title: z.string().min(3, 'Title is required.'),
+    
 })

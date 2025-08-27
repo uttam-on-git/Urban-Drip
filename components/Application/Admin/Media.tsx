@@ -86,7 +86,7 @@ const Media = ({
                                     asChild
                                 >
                                     <Link href={ADMIN_MEDIA_EDIT(media.id)}>
-                                        <MdOutlineModeEditOutline />
+                                        <MdOutlineModeEditOutline color='blue' />
                                         Edit
                                     </Link>
                                 </DropdownMenuItem>
