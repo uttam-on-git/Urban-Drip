@@ -31,7 +31,7 @@ const AppSideBar = () => {
     return (
         <Sidebar className='z-50'>
             <SidebarHeader className='h-14 border-b p-0'>
-                <div className='flex items-center justify-between px-4'>
+                <div className='flex items-center justify-between px-4 mt-0.5'>
                     <Image
                         src={logoBlack.src}
                         height={50}

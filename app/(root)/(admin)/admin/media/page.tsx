@@ -190,7 +190,7 @@ const MediaPage = () => {
                                 ) : (
                                     <>
                                         <Button
-                                            className='bg-green-700 hover:bg-green-900'
+                                            className='bg-green-700 hover:bg-green-900 dark:text-white'
                                             type='button'
                                             onClick={() =>
                                                 handleDelete(
@@ -203,6 +203,7 @@ const MediaPage = () => {
                                         </Button>
                                         <Button
                                             type='button'
+                                            className='dark:text-white'
                                             onClick={() =>
                                                 handleDelete(
                                                     selectedMedia,
