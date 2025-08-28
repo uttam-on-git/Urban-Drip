@@ -143,7 +143,7 @@ const UpdatePassword = ({ email }: { email: string }) => {
                         <div className='mb-3'>
                             <ButtonLoading
                                 type='submit'
-                                className='w-full cursor-pointer'
+                                className='w-full cursor-pointer dark:text-white'
                                 text='Update Password'
                                 loading={loading}
                             />

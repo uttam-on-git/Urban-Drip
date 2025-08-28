@@ -31,8 +31,6 @@ export async function POST(request: NextRequest) {
             },
         })
 
-        console.log(getUser)
-
         if (!getUser) {
             return response(false, 404, 'User not found')
         }

@@ -80,7 +80,7 @@ const RegisterPage = () => {
     return (
         <Card className='w-[320px] sm:w-[400px]'>
             <CardContent>
-                <div className='flex justify-center mb-5'>
+                <div className='mb-5 flex justify-center'>
                     <Image
                         src={Logo.src}
                         alt='Logo'
@@ -89,7 +89,7 @@ const RegisterPage = () => {
                         className='max-w-[150px]'
                     />
                 </div>
-                <div className='text-center mb-5'>
+                <div className='mb-5 text-center'>
                     <h1 className='text-2xl'>Make your new account</h1>
                 </div>
                 <div className='mt-5'>
@@ -197,7 +197,7 @@ const RegisterPage = () => {
                             <div className='mb-3'>
                                 <ButtonLoading
                                     type='submit'
-                                    className='w-full cursor-pointer'
+                                    className='w-full cursor-pointer dark:text-white'
                                     text='Create Account'
                                     loading={loading}
                                 />

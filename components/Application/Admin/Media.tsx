@@ -31,7 +31,7 @@ interface Media {
 
 interface MediaProps {
     media: Media
-    handleDelete: (selectedMedia:string[], deleteType:string) => void
+    handleDelete: (selectedMedia: string[], deleteType: string) => void
     deleteType: string
     selectedMedia: string[]
     setSelectedMedia: Dispatch<SetStateAction<string[]>>
@@ -102,7 +102,10 @@ const Media = ({
                                 </DropdownMenuItem>
                             </>
                         )}
-                        <DropdownMenuItem className='cursor-pointer' onClick={() => handleDelete([media.id], deleteType)} >
+                        <DropdownMenuItem
+                            className='cursor-pointer'
+                            onClick={() => handleDelete([media.id], deleteType)}
+                        >
                             <GoTrash color='red' />
                             {deleteType === 'SD'
                                 ? 'Move into trash'

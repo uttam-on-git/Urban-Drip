@@ -10,7 +10,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
 import useDeleteMutation from '@/hooks/useDeleteMutation'
 import { ADMIN_DASHBOARD, ADMIN_MEDIA_SHOW } from '@/routes/AdminPanelRoutes'
-import {useInfiniteQuery,} from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -51,7 +51,10 @@ const MediaPage = () => {
     const [selectedMedia, setSelectedMedia] = useState<string[]>([])
     const [selectAll, setSelectAll] = useState<boolean>(false)
 
-    const deleteMutation = useDeleteMutation(['media-data'], '/api/media/delete')
+    const deleteMutation = useDeleteMutation(
+        ['media-data'],
+        '/api/media/delete'
+    )
 
     const searchParams = useSearchParams()
 
@@ -77,25 +80,26 @@ const MediaPage = () => {
         return response
     }
 
-    const { data, error, status, hasNextPage, fetchNextPage, isFetching } = useInfiniteQuery({
-        queryKey: ['media-data', deleteType],
-        queryFn: async ({ pageParam }) =>
-            await fetchMedia(pageParam, deleteType),
-        initialPageParam: 0,
-        getNextPageParam: (lastPage, pages) => {
-            const nextPage = pages.length
+    const { data, error, status, hasNextPage, fetchNextPage, isFetching } =
+        useInfiniteQuery({
+            queryKey: ['media-data', deleteType],
+            queryFn: async ({ pageParam }) =>
+                await fetchMedia(pageParam, deleteType),
+            initialPageParam: 0,
+            getNextPageParam: (lastPage, pages) => {
+                const nextPage = pages.length
 
-            return lastPage.hasMore ? nextPage : null
-        },
-    })
+                return lastPage.hasMore ? nextPage : null
+            },
+        })
 
-    const handleDelete = (selectedMedia : string[], deleteType: string) => {
-        let c = true;
-        if(deleteType === 'PD') {
+    const handleDelete = (selectedMedia: string[], deleteType: string) => {
+        let c = true
+        if (deleteType === 'PD') {
             c = confirm('Are you sure you want to delete the data permanently?')
         }
-        if(c) {
-            deleteMutation.mutate({ids: selectedMedia, deleteType})
+        if (c) {
+            deleteMutation.mutate({ ids: selectedMedia, deleteType })
         }
 
         setSelectAll(false)
@@ -107,8 +111,10 @@ const MediaPage = () => {
     }
 
     useEffect(() => {
-        if(selectAll) {
-            const ids = data?.pages.flatMap(page => page.mediaData.map(media => media.id))
+        if (selectAll) {
+            const ids = data?.pages.flatMap((page) =>
+                page.mediaData.map((media) => media.id)
+            )
             setSelectedMedia(ids ?? [])
         } else {
             setSelectedMedia([])
@@ -124,91 +130,137 @@ const MediaPage = () => {
                             {deleteType === 'SD' ? 'Media' : 'Media Trash'}
                         </h4>
                         <div className='flex items-center gap-5'>
-                            {deleteType === 'SD' && <UploadMedia isMultiple={true}/>}
+                            {deleteType === 'SD' && (
+                                <UploadMedia isMultiple={true} />
+                            )}
                             <div className='flex gap-3'>
                                 {deleteType === 'SD' ? (
-                                <Button type='button' variant='destructive' className='dark:bg-red-500'>
-                                    <Link
-                                        href={`${ADMIN_MEDIA_SHOW}?trashof=media`}
+                                    <Button
+                                        type='button'
+                                        variant='destructive'
+                                        className='dark:bg-red-500'
                                     >
-                                        Trash
-                                    </Link>
-                                </Button>
-                            ) : (
-                                <Button type='button' className='cursor-pointer dark:text-white'>
-                                    <Link href={`${ADMIN_MEDIA_SHOW}`}>
-                                        Back To Media
-                                    </Link>
-                                </Button>
-                            )}
+                                        <Link
+                                            href={`${ADMIN_MEDIA_SHOW}?trashof=media`}
+                                        >
+                                            Trash
+                                        </Link>
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type='button'
+                                        className='cursor-pointer dark:text-white'
+                                    >
+                                        <Link href={`${ADMIN_MEDIA_SHOW}`}>
+                                            Back To Media
+                                        </Link>
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className='pb-5'>
-                    {
-                        selectedMedia.length > 0 && 
-                        <div className='px-3 py-2 rounded border-primary mb-2 flex justify-between items-center'>
+                    {selectedMedia.length > 0 && (
+                        <div className='border-primary mb-2 flex items-center justify-between rounded px-3 py-2'>
                             <Label>
-                                <Checkbox checked={selectAll}
-                                onCheckedChange={handleSelectAll}
-                                className='border-primary z-56'
+                                <Checkbox
+                                    checked={selectAll}
+                                    onCheckedChange={handleSelectAll}
+                                    className='border-primary z-56'
                                 />
-                                Select All 
+                                Select All
                             </Label>
 
                             <div className='flex gap-2'>
-                                {
-                                    deleteType === 'SD' ? 
-                                    <Button type='button' variant='destructive' className='cursor-pointer dark:bg-red-500' onClick={() => handleDelete(selectedMedia, deleteType)}>
+                                {deleteType === 'SD' ? (
+                                    <Button
+                                        type='button'
+                                        variant='destructive'
+                                        className='cursor-pointer dark:bg-red-500'
+                                        onClick={() =>
+                                            handleDelete(
+                                                selectedMedia,
+                                                deleteType
+                                            )
+                                        }
+                                    >
                                         Move Into Trash
                                     </Button>
-                                    :
+                                ) : (
                                     <>
-                                    <Button className='bg-green-700 hover:bg-green-900' type='button' onClick={() => handleDelete(selectedMedia, "RSD")}>
-                                        Restore
-                                    </Button>
-                                    <Button type='button' onClick={() => handleDelete(selectedMedia, "RSD")}>
-                                        Delete Permanently
-                                    </Button>
+                                        <Button
+                                            className='bg-green-700 hover:bg-green-900'
+                                            type='button'
+                                            onClick={() =>
+                                                handleDelete(
+                                                    selectedMedia,
+                                                    'RSD'
+                                                )
+                                            }
+                                        >
+                                            Restore
+                                        </Button>
+                                        <Button
+                                            type='button'
+                                            onClick={() =>
+                                                handleDelete(
+                                                    selectedMedia,
+                                                    'RSD'
+                                                )
+                                            }
+                                        >
+                                            Delete Permanently
+                                        </Button>
                                     </>
-                                }
+                                )}
                             </div>
                         </div>
-                    }
+                    )}
                     {status === 'pending' ? (
                         <div>loading...</div>
                     ) : status === 'error' ? (
                         <div className='text-sm text-red-500'>
                             {error.message}
                         </div>
-                    ) : 
-                    <> 
-                    {
-                        data?.pages.flatMap(page => (page.mediaData || []).map(media => media.id)).length === 0 && <div className='text-center text-red-500'>Data not found.</div>
-                    }
-                        <div className='mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5'>
-                            {data?.pages?.map((page, index) => (
-                                <React.Fragment key={index}>
-                                    {page?.mediaData?.map((media) => (
-                                        <Media
-                                            key={media.id}
-                                            media={media}
-                                            handleDelete={handleDelete}
-                                            deleteType={deleteType}
-                                            selectedMedia={selectedMedia}
-                                            setSelectedMedia={setSelectedMedia}
-                                        />
-                                    ))}
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    </>
-                    }
-                    {
-                        hasNextPage && 
-                        <ButtonLoading type='button' className='cursor-pointer dark:text-white' loading={isFetching} onClick={() => fetchNextPage()} text='Load more' />
-                    }
+                    ) : (
+                        <>
+                            {data?.pages.flatMap((page) =>
+                                (page.mediaData || []).map((media) => media.id)
+                            ).length === 0 && (
+                                <div className='text-center text-red-500'>
+                                    Data not found.
+                                </div>
+                            )}
+                            <div className='mb-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5'>
+                                {data?.pages?.map((page, index) => (
+                                    <React.Fragment key={index}>
+                                        {page?.mediaData?.map((media) => (
+                                            <Media
+                                                key={media.id}
+                                                media={media}
+                                                handleDelete={handleDelete}
+                                                deleteType={deleteType}
+                                                selectedMedia={selectedMedia}
+                                                setSelectedMedia={
+                                                    setSelectedMedia
+                                                }
+                                            />
+                                        ))}
+                                    </React.Fragment>
+                                ))}
+                            </div>
+                        </>
+                    )}
+                    {hasNextPage && (
+                        <ButtonLoading
+                            type='button'
+                            className='cursor-pointer dark:text-white'
+                            loading={isFetching}
+                            onClick={() => fetchNextPage()}
+                            text='Load more'
+                        />
+                    )}
                 </CardContent>
             </Card>
         </div>

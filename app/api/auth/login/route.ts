@@ -30,6 +30,6 @@ export async function POST(request: NextRequest) {
         //call the login service to handle the login
         return loginUser(validatedData.data)
     } catch (error) {
-        handleApiError(error, 'An error occurred during login process.')
+        handleApiError(error)
     }
 }

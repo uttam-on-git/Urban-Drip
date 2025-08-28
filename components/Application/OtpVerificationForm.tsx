@@ -55,7 +55,6 @@ const OtpVerificationForm = ({
                 '/api/auth/otp-resend',
                 { email }
             )
-            console.log(otpResendResponse)
             if (!otpResendResponse.success) {
                 throw new Error(otpResendResponse.message)
             }
@@ -132,7 +131,7 @@ const OtpVerificationForm = ({
                     <div className='mb-3'>
                         <ButtonLoading
                             type='submit'
-                            className='w-full cursor-pointer'
+                            className='w-full cursor-pointer dark:text-white'
                             text='Verify'
                             loading={loading}
                         />

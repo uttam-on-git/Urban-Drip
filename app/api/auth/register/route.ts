@@ -61,7 +61,6 @@ export async function POST(request: NextRequest) {
             'Registration success, please verify your email address.'
         )
     } catch (error) {
-        console.error('[API REGISTRATION ERROR]:', error)
         return handleApiError(error)
     }
 }

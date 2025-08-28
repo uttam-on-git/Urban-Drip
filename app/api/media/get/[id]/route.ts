@@ -1,25 +1,31 @@
-import { handleApiError, isAuthenticated, response } from "@/lib/helperFunction";
-import { NextRequest } from "next/server";
-import { prisma } from "@/lib/db"
+import { handleApiError, isAuthenticated, response } from '@/lib/helperFunction'
+import { NextRequest } from 'next/server'
+import { prisma } from '@/lib/db'
 
-export async function GET(request: NextRequest, {params}: { params: { id: string } }) {
+export async function GET(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+) {
     try {
         const auth = await isAuthenticated('ADMIN')
-        if(!auth.isAuth) {
+        if (!auth.isAuth) {
             return response(false, 403, 'Unauthorised request')
         }
 
-        const getParams = params
-        const id = getParams.id
+        const resolvedParams = await Promise.resolve(params);
+        const { id } = resolvedParams;
+        if (!id) {
+            return response(false, 400, 'Media ID is missing.');
+        }
 
-        const getMedia = prisma.media.findFirst({
+        const getMedia = await prisma.media.findFirst({
             where: {
                 id: id,
-                deletedAt: null
-            }
+                deletedAt: null,
+            },
         })
 
-        if(!getMedia) {
+        if (!getMedia) {
             return response(false, 403, 'Media not found.')
         }
 

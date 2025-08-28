@@ -5,7 +5,6 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
     try {
         const payload = await request.json()
-        console.log('signature payload: ', payload)
 
         const { paramsToSign } = payload
         const apiSecret = process.env.CLOUDINARY_SECRET_KEY

@@ -126,7 +126,7 @@ const LoginPage = () => {
     return (
         <Card className='w-[320px] sm:w-[400px]'>
             <CardContent>
-                <div className='flex justify-center mb-5'>
+                <div className='mb-5 flex justify-center'>
                     <Image
                         src={Logo.src}
                         alt='Logo'
@@ -138,7 +138,7 @@ const LoginPage = () => {
 
                 {!otpEmail ? (
                     <>
-                        <div className='text-center mb-5'>
+                        <div className='mb-5 text-center'>
                             <h1 className='text-2xl'>Login Into Account</h1>
                             <p>Ready to dive back in? Enter your details.</p>
                         </div>

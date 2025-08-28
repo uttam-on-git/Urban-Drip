@@ -28,5 +28,4 @@ export const zodSchema = z.object({
     id: z.string().min(3, 'id is required.'),
     alt: z.string().min(3, 'Alt is required.'),
     title: z.string().min(3, 'Title is required.'),
-    
 })

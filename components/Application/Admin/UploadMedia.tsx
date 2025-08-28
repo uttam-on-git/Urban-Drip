@@ -3,13 +3,13 @@
 
 import { Button } from '@/components/ui/button'
 import { showToast } from '@/lib/showToast'
-import {useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { CldUploadWidget } from 'next-cloudinary'
 import type { CloudinaryUploadWidgetError } from 'next-cloudinary'
 import { FiPlus } from 'react-icons/fi'
 
-const UploadMedia = ({ isMultiple}: { isMultiple?: boolean, }) => {
+const UploadMedia = ({ isMultiple }: { isMultiple?: boolean }) => {
     const queryClient = useQueryClient()
     const handleOnError = (error: CloudinaryUploadWidgetError) => {
         if (!error) {
@@ -49,7 +49,7 @@ const UploadMedia = ({ isMultiple}: { isMultiple?: boolean, }) => {
                         throw new Error(mediaUploadResponse.error)
                     }
 
-                    queryClient.invalidateQueries({ queryKey: ['media-data']})
+                    queryClient.invalidateQueries({ queryKey: ['media-data'] })
                     showToast('success', mediaUploadResponse.message)
                 } catch (error) {
                     showToast(
@@ -76,7 +76,10 @@ const UploadMedia = ({ isMultiple}: { isMultiple?: boolean, }) => {
         >
             {({ open }) => {
                 return (
-                    <Button onClick={() => open()} className='cursor-pointer dark:text-white'>
+                    <Button
+                        onClick={() => open()}
+                        className='cursor-pointer dark:text-white'
+                    >
                         <FiPlus />
                         Upload Files
                     </Button>

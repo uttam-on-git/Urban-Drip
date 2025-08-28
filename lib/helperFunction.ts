@@ -17,7 +17,6 @@ export const response = (
 }
 
 export const handleApiError = (error: unknown) => {
-
     let message = 'An internal server error occurred.'
     const statusCode = 500
     if (error instanceof Error) {

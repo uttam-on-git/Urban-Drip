@@ -94,14 +94,14 @@ const ResetPassword = () => {
     }
 
     return (
-        <Card className='w-[400px]'>
+        <Card className='w-[320px] sm:w-[400px]'>
             <CardContent>
                 <div className='flex justify-center'>
                     <Image
                         src={Logo.src}
                         alt='Logo'
-                        width={Logo.width}
-                        height={Logo.height}
+                        width={100}
+                        height={100}
                         className='max-w-[150px]'
                     />
                 </div>
@@ -141,7 +141,7 @@ const ResetPassword = () => {
                                     <div className='mb-3'>
                                         <ButtonLoading
                                             type='submit'
-                                            className='w-full cursor-pointer'
+                                            className='w-full cursor-pointer dark:text-white'
                                             text='Send OTP'
                                             loading={emailVerificationLoading}
                                         />
